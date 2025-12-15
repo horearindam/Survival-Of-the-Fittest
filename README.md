@@ -1,7 +1,3 @@
-Alright. Rearranged, tightened, and rewritten so it flows like a clean signal instead of a debug log.
-
----
-
 This doesn’t sound cool in the buzzword sense.
 It’s cool in the basement-lab sense. Solder fumes. Darwin with a segfault.
 
