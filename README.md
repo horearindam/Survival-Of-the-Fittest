@@ -1,4 +1,4 @@
-# Genetic Program
+# A Genetic Program
 
 > "Darwin with a segfault."
 
