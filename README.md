@@ -45,7 +45,11 @@ Respectable? Quietly, yes.
 
 Wanna initiate?
 
+Dependencies: [SDL2]
+
 ```console
 $ make
 $ ./gp
 ```
+
+[SDL2]: https://www.libsdl.org/
