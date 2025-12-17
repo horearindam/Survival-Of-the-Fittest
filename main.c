@@ -1,5 +1,7 @@
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include <SDL2/SDL.h>
 
@@ -14,7 +16,28 @@
 
 #define AGENTS_COUNT 5
 
-#define BACKGROUND_COLOR "181818"
+#define BACKGROUND_COLOR "353535"
+#define GRID_COLOR       "748CAB"
+
+int scc(int code)
+{
+    if(code < 0)
+    {
+        fprintf(stderr, "SDL Error: %s\n", SDL_GetError());
+        exit(EXIT_FAILURE);
+    }
+    return code;
+}
+
+void *scp(void *ptr)
+{
+    if(ptr == NULL)
+    {
+        fprintf(stderr, "SDL Error: %s\n", SDL_GetError());
+        exit(EXIT_FAILURE);
+    }
+    return ptr;
+}
 
 Uint8 hex_to_dec(char x)
 {
@@ -75,44 +98,24 @@ typedef enum {
 
 Agent agents[AGENTS_COUNT];
 
-int scc(int code)
-{
-    if(code < 0)
-    {
-        fprintf(stderr, "SDL Error: %s\n", SDL_GetError());
-        exit(EXIT_FAILURE);
-    }
-    return code;
-}
-
-void *scp(void *ptr)
-{
-    if(ptr == NULL)
-    {
-        fprintf(stderr, "SDL Error: %s\n", SDL_GetError());
-        exit(EXIT_FAILURE);
-    }
-    return ptr;
-}
-
 void render_board_grid(SDL_Renderer *renderer)
 {
-    scc(SDL_SetRenderDrawColor(renderer, 60, 60, 60, 255));
+    sdl_set_color_hex(renderer, GRID_COLOR);
     for(int x = 1; x < BOARD_WIDTH; x++)
     {
-        for(int y = 1; y < BOARD_HEIGHT; y++)
-        {
-            scc(SDL_RenderDrawLine(
-                renderer,
-                x * CELL_WIDTH, 0,
-                x * CELL_WIDTH, SCREEN_HEIGHT
-            ));
-            scc(SDL_RenderDrawLine(
-                renderer,
-                0, y * CELL_HEIGHT,
-                SCREEN_WIDTH, y * CELL_HEIGHT
-            ));
-        }
+        scc(SDL_RenderDrawLine(
+            renderer,
+            x * CELL_WIDTH, 0,
+            x * CELL_WIDTH, SCREEN_HEIGHT
+        ));
+    }
+    for(int y = 1; y < BOARD_HEIGHT; y++)
+    {
+        scc(SDL_RenderDrawLine(
+            renderer,
+            0, y * CELL_HEIGHT,
+            SCREEN_WIDTH, y * CELL_HEIGHT
+        ));
     }
 }
 
@@ -147,7 +150,7 @@ void init_agents(void)
 
 void render_agent(SDL_Renderer *renderer, Agent agent)
 {
-    SDL_RenderDrawColor(renderer, 255);
+    assert(0 && "Not implemented");
 }
 
 void render_all_agents(SDL_Renderer *renderer)
@@ -188,7 +191,7 @@ int main(int argc, char *argv[])
             }
         }
 
-        scc(SDL_SetRenderDrawColor(renderer, 30, 30, 30, 255));
+        sdl_set_color_hex(renderer, BACKGROUND_COLOR);
         scc(SDL_RenderClear(renderer));
         render_board_grid(renderer);
         SDL_RenderPresent(renderer);
