@@ -14,6 +14,44 @@
 
 #define AGENTS_COUNT 5
 
+#define BACKGROUND_COLOR "181818"
+
+Uint8 hex_to_dec(char x)
+{
+    if(x >= '0' && x <= '9')
+    {
+        return x - '0';
+    }
+    if(x >= 'a' && x <= 'f')
+    {
+        return x - 'a' + 10;
+    }
+    if(x >= 'A' && x <= 'F')
+    {
+        return x - 'A' + 10;
+    }
+    printf("Invalid hex character: %c\n", x);
+    exit(EXIT_FAILURE);
+}
+
+Uint8 parse_hex_byte(const char *byte_hex)
+{
+    return hex_to_dec(*byte_hex) * 0x10 + hex_to_dec(*(byte_hex + 1));
+}
+
+void sdl_set_color_hex(SDL_Renderer *renderer, const char *hex)
+{
+    size_t hex_len = strlen(hex);
+    assert(hex_len == 6);
+    scc(SDL_SetRenderDrawColor(
+            renderer, 
+            parse_hex_byte(hex),
+            parse_hex_byte(hex + 2),
+            parse_hex_byte(hex + 4),
+            255
+        ));
+}
+
 typedef enum {
     DIR_RIGHT = 0,
     DIR_DOWN,
@@ -104,6 +142,19 @@ void init_agents(void)
     for(size_t i = 0; i < AGENTS_COUNT; i++)
     {
         agents[i] = random_agent();
+    }
+}
+
+void render_agent(SDL_Renderer *renderer, Agent agent)
+{
+    SDL_RenderDrawColor(renderer, 255);
+}
+
+void render_all_agents(SDL_Renderer *renderer)
+{
+    for(size_t i = 0; i < AGENTS_COUNT; i++)
+    {
+        render_agent(renderer, agents[i]);
     }
 }
 
