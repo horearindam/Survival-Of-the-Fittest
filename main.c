@@ -5,6 +5,8 @@
 
 #include <SDL2/SDL.h>
 
+#include "./style.h"
+
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 800
 
@@ -15,9 +17,6 @@
 #define CELL_HEIGHT ((float)SCREEN_HEIGHT / BOARD_HEIGHT)
 
 #define AGENTS_COUNT 5
-
-#define BACKGROUND_COLOR "353535"
-#define GRID_COLOR       "748CAB"
 
 int scc(int code)
 {
@@ -150,7 +149,16 @@ void init_agents(void)
 
 void render_agent(SDL_Renderer *renderer, Agent agent)
 {
-    assert(0 && "Not implemented");
+    sdl_set_color_hex(renderer, AGENT_COLOR);
+
+    SDL_Rect rect = {
+        (int) floorf(agent.pos_x * CELL_WIDTH),
+        (int) floorf(agent.pos_y * CELL_HEIGHT),
+        (int) ceilf(CELL_WIDTH),
+        (int) ceilf(CELL_HEIGHT)
+    };
+    
+    scc(SDL_RenderFillRect(renderer, &rect));
 }
 
 void render_all_agents(SDL_Renderer *renderer)
@@ -179,6 +187,8 @@ int main(int argc, char *argv[])
 
     scc(SDL_RenderSetLogicalSize(renderer, SCREEN_WIDTH, SCREEN_HEIGHT));
 
+    init_agents();
+
     int quit = 0;
     while(!quit)
     {
@@ -194,6 +204,7 @@ int main(int argc, char *argv[])
         sdl_set_color_hex(renderer, BACKGROUND_COLOR);
         scc(SDL_RenderClear(renderer));
         render_board_grid(renderer);
+        render_all_agents(renderer);
         SDL_RenderPresent(renderer);
 
     }
